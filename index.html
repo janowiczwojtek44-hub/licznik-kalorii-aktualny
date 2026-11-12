@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kalorie"><meta name="theme-color" content="#0b120f">
+<title>Kalorie</title>
+<style>
+:root{--bg:#f2f6f4;--card:#fff;--tx:#12201a;--mu:#6b7c73;--ac:#16a06a;--bd:#e4ece7;--tr:#e6eee9;--wa:#e5484d;--sh:0 1px 2px #0000000d,0 10px 28px -14px #0003}
+@media(prefers-color-scheme:dark){:root{--bg:#0a110e;--card:#131d18;--tx:#e9f2ed;--mu:#8da197;--ac:#3ecf93;--bd:#202e27;--tr:#243329;--sh:0 10px 28px -14px #000}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+body{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 62px) 14px calc(env(safe-area-inset-bottom,0px) + 92px);background:radial-gradient(120% 40% at 50% 0,color-mix(in srgb,var(--ac) 14%,transparent),transparent) no-repeat}
+header{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 8px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);z-index:5}
+header button{background:none;border:0;color:var(--tx);font-size:28px;width:48px;height:40px}
+#dl{font-weight:700;text-transform:capitalize}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;display:flex;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{flex:1;padding:10px 0 8px;background:none;border:0;color:var(--mu);font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}nav .on{color:var(--ac);font-weight:700}
+#fab{position:fixed;right:max(18px,calc(50% - 242px));bottom:calc(env(safe-area-inset-bottom,0px) + 74px);width:60px;height:60px;border-radius:20px;border:0;background:var(--ac);color:#fff;font-size:34px;box-shadow:0 8px 22px -6px var(--ac);z-index:6}
+.card{background:var(--card);border-radius:22px;padding:16px;margin-bottom:12px;border:1px solid var(--bd);box-shadow:var(--sh)}
+.rw{position:relative;width:230px;height:230px;margin:2px auto 10px}.rw svg{width:100%;height:100%}
+.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.rc b{font-size:30px;font-weight:800;line-height:1}.rc span{font-size:11px;color:var(--mu);max-width:74px}
+.lgs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.lg{display:flex;gap:7px;align-items:flex-start}.lg i{width:8px;height:30px;border-radius:4px;flex:none;margin-top:2px}
+.lg b{font-size:15px;display:block;line-height:1.2}.lg small{font-weight:400;color:var(--mu);font-size:11px}.lg span{font-size:12px;color:var(--mu)}
+.sum{text-align:center;color:var(--mu);font-size:13px;margin-bottom:12px}
+.mut{color:var(--mu);font-size:13px}.warn{color:var(--wa);font-size:13px}
+.meal{border-bottom:1px solid var(--bd)}.meal:last-child{border:0}
+.mh{display:flex;align-items:center;gap:10px;padding:12px 0}.mi{flex:1;min-width:0}.mi b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mk{font-weight:800;font-size:20px;text-align:right;line-height:1}.mk small{display:block;font-size:10px;font-weight:400;color:var(--mu)}
+.ch{width:18px;height:18px;fill:none;stroke:var(--mu);stroke-width:2.5;transition:transform .2s}.open .ch{transform:rotate(180deg)}
+.mb{padding:0 0 12px;animation:fd .2s}@keyframes fd{from{opacity:0;transform:translateY(-4px)}}
+.mt{width:100%;border:0;background:transparent;font-weight:700;font-size:15px;padding:4px 0;margin-bottom:4px;color:var(--tx)}
+.ir{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;background:var(--bg);border-radius:12px}
+.ir div{min-width:0}.ir small{display:block;color:var(--mu);font-size:12px}.ir span{white-space:nowrap;font-weight:600}
+.bs{display:flex;gap:8px;margin-top:8px}.bs button{flex:1;padding:10px;border:0;border-radius:12px;background:var(--tr);color:var(--tx);font-size:14px}.bs .d{color:var(--wa)}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 4px}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:16px system-ui}
+input[type=range]{padding:0;accent-color:var(--ac)}input[type=checkbox]{width:22px;height:22px;accent-color:var(--ac)}
+.btn{display:block;width:100%;padding:15px;margin-top:12px;border:0;border-radius:14px;background:var(--ac);color:#fff;font-size:16px;font-weight:700}.btn.s{background:var(--tr);color:var(--tx);font-weight:600}
+#sh{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}#sh[hidden]{display:none}
+.bg{position:absolute;inset:0;background:#0007}
+.box{position:relative;width:100%;max-width:520px;max-height:90%;overflow:auto;background:var(--card);border-radius:24px 24px 0 0;padding:20px 16px calc(env(safe-area-inset-bottom,0px) + 18px);animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.box h3{margin:0 0 8px;font-size:19px}video{width:100%;border-radius:14px;background:#000;max-height:46vh}
+.spin{width:36px;height:36px;border:4px solid var(--tr);border-top-color:var(--ac);border-radius:50%;margin:20px auto 10px;animation:r 1s linear infinite}@keyframes r{to{transform:rotate(360deg)}}
+.it{display:grid;grid-template-columns:28px 1fr 84px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--bd)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.chips button{padding:9px 12px;border:0;border-radius:11px;background:var(--tr);color:var(--tx);font-size:14px}.chips .on{background:var(--ac);color:#fff;font-weight:700}
+.rcs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.rcs button{padding:10px 12px;border:0;border-radius:12px;background:var(--bg);color:var(--tx);text-align:left;font-size:14px}.rcs small{display:block;color:var(--mu)}
+.row2{display:flex;gap:8px;align-items:center}
+.vf{position:relative;border-radius:16px;overflow:hidden;background:#000}.vf video{display:block;width:100%}
+.rt{position:absolute;left:9%;top:33%;width:82%;height:34%;border-radius:14px;box-shadow:0 0 0 999px #0008}
+.rt s{position:absolute;width:26px;height:26px;border:4px solid #3ecf93}
+.rt s:nth-of-type(1){top:-2px;left:-2px;border-right:0;border-bottom:0;border-top-left-radius:14px}.rt s:nth-of-type(2){top:-2px;right:-2px;border-left:0;border-bottom:0;border-top-right-radius:14px}.rt s:nth-of-type(3){bottom:-2px;left:-2px;border-right:0;border-top:0;border-bottom-left-radius:14px}.rt s:nth-of-type(4){bottom:-2px;right:-2px;border-left:0;border-top:0;border-bottom-right-radius:14px}
+.rt i{position:absolute;left:5%;right:5%;top:50%;height:2px;background:#ff4d4d;box-shadow:0 0 8px #f33;animation:sl 1.6s ease-in-out infinite alternate}@keyframes sl{from{top:12%}to{top:88%}}
+.stk{display:flex;align-items:center;gap:7px;margin:0 auto 12px;padding:8px 16px;border-radius:99px;background:var(--card);border:1px solid var(--bd);width:max-content;max-width:100%;font-weight:700;font-size:15px;color:var(--mu);box-shadow:var(--sh);cursor:pointer}.stk.on{color:#f97316;border-color:#f9731655}
+.fl{width:22px;height:22px;flex:none;fill:var(--tr);stroke:var(--mu);stroke-width:1.6;stroke-linejoin:round}.fl.on{fill:url(#fg);stroke:#f97316;animation:fk 1.4s ease-in-out infinite alternate}.fl.big{width:64px;height:64px}@keyframes fk{from{transform:scale(1)}to{transform:scale(1.1) rotate(-3deg)}}
+.wk{display:flex;justify-content:space-between;margin:14px 0}.wk div{text-align:center;font-size:12px;color:var(--mu)}.wk i{display:block;width:34px;height:34px;border-radius:50%;background:var(--tr);margin-bottom:4px}.wk .y i{background:#f97316}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ef4444"/><stop offset=".55" stop-color="#f97316"/><stop offset="1" stop-color="#fbbf24"/></linearGradient></defs></svg>
+<header><button onclick="sh(-1)">‹</button><b id="dl"></b><button onclick="sh(1)">›</button></header>
+<main id="app"></main>
+<button id="fab" onclick="addMenu()">+</button>
+<nav><button data-t="day" onclick="tab='day';render()"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>Dziennik</button><button data-t="prof" onclick="tab='prof';render()"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profil</button></nav>
+<div id="sh" hidden><div class="bg" onclick="closeSh()"></div><div class="box" id="shc"></div></div>
+<datalist id="ml1"></datalist><datalist id="ml2"></datalist>
+<script>
+const $=s=>document.querySelector(s);
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const uid=()=>'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let P=ld('p',{sex:'m',age:30,h:175,w:75,act:1.55,goal:'lose',rate:0.5,met:0}),L=ld('l',{}),S=Object.assign({key:'',mt:'openrouter/free',mv:'openrouter/free'},ld('s',{})),W=ld('wh',[]),tab='day',IT=[],TT='',PR=null,LR=null,stream=null,zx=null,scanning=false,OP=new Set();
+Object.keys(L).forEach(d=>{L[d]=L[d].map(x=>x.items?x:{id:uid(),n:x.n,t:'',items:[{n:x.n,g:x.g||0,k:x.k,p:x.p,c:x.c,f:x.f}]})});
+let PF=1,CTX='pre',RG=null,RC=[],NT='';
+const CP='#5b8def',CC='#f5a524',CF='#ef6f8a';
+const iso=d=>{const z=new Date(d);z.setMinutes(z.getMinutes()-z.getTimezoneOffset());return z.toISOString().slice(0,10)};
+let D=iso(new Date());
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const r1=n=>Math.round(n*10)/10,num=v=>{const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?0:n};
+const tot=e=>e.reduce((a,x)=>({k:a.k+x.k,p:a.p+x.p,c:a.c+x.c,f:a.f+x.f}),{k:0,p:0,c:0,f:0});
+const hm=()=>new Date().toTimeString().slice(0,5);
+function sh(n){const d=new Date(D+'T12:00:00');d.setDate(d.getDate()+n);D=iso(d);tab='day';render()}
+function calc(){const{sex,age,h,w,act,goal,rate,met}=P;const bmr=10*w+6.25*h-5*age+(sex==='m'?5:-161),base=bmr*act,tdee=base*(1+met/100),dir=goal==='lose'?-1:goal==='gain'?1:0;let k=tdee+dir*rate*1100;const min=sex==='m'?1500:1200,low=k<min;if(low)k=min;const p=w*(goal==='lose'?2:1.6),f=k*.27/9;return{base,tdee,k:Math.round(k),p:Math.round(p),f:Math.round(f),c:Math.round(Math.max(0,(k-p*4-f*9)/4)),low}}
+function cal(){const f=new Date();f.setDate(f.getDate()-28);const ws=W.filter(x=>x.d>=iso(f)).sort((a,b)=>a.d<b.d?-1:1);if(ws.length<2)return null;const a=ws[0],b=ws[ws.length-1],days=(new Date(b.d)-new Date(a.d))/864e5;if(days<14)return null;const ds=Object.keys(L).filter(d=>d>=a.d&&d<=b.d&&tot(L[d].flatMap(g=>g.items)).k>800);if(ds.length<days*.6)return null;const avg=ds.reduce((s,d)=>s+tot(L[d].flatMap(g=>g.items)).k,0)/ds.length;return{t:Math.round(avg-(b.w-a.w)*7700/days),avg:Math.round(avg)}}
+const arc=(r,w,v,t,col)=>{const C=2*Math.PI*r,p=Math.min(1,t?v/t:0);return `<circle cx="100" cy="100" r="${r}" fill="none" stroke="var(--tr)" stroke-width="${w}"/>`+(p>.004?`<circle cx="100" cy="100" r="${r}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" transform="rotate(-90 100 100)"/>`:'')};
+const lg=(n,v,t,col)=>`<div class="lg"><i style="background:${col}"></i><div><b>${Math.round(v)}<small> / ${t} g</small></b><span>${n}</span></div></div>`;
+const find=id=>(L[D]||[]).find(g=>g.id===id);
+const addD=(d,n)=>{const x=new Date(d+'T12:00:00');x.setDate(x.getDate()+n);return iso(x)};
+const has=d=>(L[d]||[]).length>0,dz=n=>n===1?'dzień':'dni';
+function streak(){const t=iso(new Date()),on=has(t);let d=on?t:addD(t,-1),n=0;while(has(d)){n++;d=addD(d,-1)}const ds=Object.keys(L).filter(has).sort();let best=0,run=0,prev=null;ds.forEach(x=>{run=prev&&addD(prev,1)===x?run+1:1;prev=x;if(run>best)best=run});return{n,on,best}}
+const flame=(on,big)=>`<svg viewBox="0 0 24 24" class="fl${on?' on':''}${big?' big':''}"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z"/></svg>`;
+function stPill(){const s=streak();return `<div class="stk${s.on?' on':''}" onclick="stInfo()">${flame(s.on)}${s.on?'Seria: '+s.n+' '+dz(s.n):s.n?s.n+' '+dz(s.n)+' · dodaj dziś posiłek':'Brak serii'}</div>`}
+function stInfo(){const s=streak(),t=iso(new Date());openSh(`<div style="text-align:center">${flame(s.on,1)}<h3 style="margin-top:6px">${s.on?'Seria trwa: '+s.n+' '+dz(s.n):s.n?'Seria czeka: '+s.n+' '+dz(s.n):'Zacznij serię'}</h3><p class="mut">${s.on?'Dziś już coś zapisałeś. Wróć jutro, żeby ją przedłużyć.':s.n?'Zapisz dziś choć jeden posiłek, żeby jej nie przerwać.':'Zapisuj posiłki codziennie, a płomień się rozpali.'}</p></div><div class="wk">${[6,5,4,3,2,1,0].map(i=>{const d=addD(t,-i);return `<div class="${has(d)?'y':''}"><i></i>${new Date(d+'T12:00').toLocaleDateString('pl-PL',{weekday:'short'}).slice(0,2)}</div>`}).join('')}</div><p class="mut" style="text-align:center">Rekord: ${s.best} ${dz(s.best)}. Dzień się liczy, gdy zapiszesz co najmniej jeden posiłek.</p>`)}
+function rDay(){const c=calc(),E=L[D]||[],t=tot(E.flatMap(g=>g.items)),left=c.k-t.k,over=left<0;
+return stPill()+`<div class="card"><div class="rw"><svg viewBox="0 0 200 200">${arc(92,14,t.k,c.k,over?'var(--wa)':'var(--ac)')}${arc(72,9,t.p,c.p,CP)}${arc(58,9,t.c,c.c,CC)}${arc(44,9,t.f,c.f,CF)}</svg><div class="rc"><b>${Math.abs(Math.round(left))}</b><span>${over?'kcal ponad cel':'kcal zostało'}</span></div></div>
+<div class="sum">Zjedzone ${Math.round(t.k)} z ${c.k} kcal</div><div class="lgs">${lg('Białko',t.p,c.p,CP)}${lg('Węglowodany',t.c,c.c,CC)}${lg('Tłuszcz',t.f,c.f,CF)}</div></div>
+<div class="card"><b>Posiłki</b>${E.length?E.map(g=>{const m=tot(g.items),o=OP.has(g.id);return `<div class="meal${o?' open':''}"><div class="mh" onclick="tg('${g.id}')"><div class="mi"><b>${esc(g.n)}</b><span class="mut">${g.t?g.t+' · ':''}${g.items.length} skł. · B ${r1(m.p)} W ${r1(m.c)} T ${r1(m.f)}</span></div><div class="mk">${Math.round(m.k)}<small>kcal</small></div><svg class="ch" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>${o?`<div class="mb"><input class="mt" value="${esc(g.n)}" onchange="rn('${g.id}',this.value)">${g.items.map((x,j)=>`<div class="ir" onclick="ei('${g.id}',${j})"><div><b>${esc(x.n)}</b><small>${x.g?x.g+' g · ':''}B ${r1(x.p)} W ${r1(x.c)} T ${r1(x.f)}</small></div><span>${Math.round(x.k)} kcal</span></div>`).join('')}<label>Zmień porcję całego posiłku</label><div class="chips">${PC.filter(c=>c[1]!==1).map(([l,f])=>`<button onclick="pg('${g.id}',${f})">${l}</button>`).join('')}</div><div class="bs"><button onclick="ei('${g.id}',-1)">+ Składnik</button><button onclick="rep('${g.id}')">Powtórz</button><button class="d" onclick="dm('${g.id}')">Usuń</button></div></div>`:''}</div>`}).join(''):'<p class="mut">Nic jeszcze nie dodano. Dotknij + .</p>'}</div>`}
+const opt=(v,cur,t)=>`<option value="${v}"${String(cur)===String(v)?' selected':''}>${t}</option>`;
+function rProf(){const c=calc(),k=cal(),m=P.met;
+return `<div class="card"><b>Twoje dane</b><label>Płeć</label><select data-p="sex" data-str="1">${opt('m',P.sex,'Mężczyzna')}${opt('f',P.sex,'Kobieta')}</select>
+<div class="g3"><div><label>Wiek</label><input type="number" data-p="age" value="${P.age}"></div><div><label>Wzrost (cm)</label><input type="number" data-p="h" value="${P.h}"></div><div><label>Waga (kg)</label><input type="number" step="0.1" data-p="w" value="${P.w}"></div></div>
+<label>Aktywność</label><select data-p="act">${opt(1.2,P.act,'Siedzący tryb życia')}${opt(1.375,P.act,'Lekka (1–3 treningi/tydz.)')}${opt(1.55,P.act,'Umiarkowana (3–5)')}${opt(1.725,P.act,'Duża (6–7)')}${opt(1.9,P.act,'Bardzo duża / praca fizyczna')}</select>
+<label>Cel</label><select data-p="goal" data-str="1">${opt('lose',P.goal,'Schudnąć')}${opt('maintain',P.goal,'Utrzymać wagę')}${opt('gain',P.goal,'Przytyć')}</select>
+${P.goal!=='maintain'?`<label>Tempo (kg na tydzień)</label><select data-p="rate">${[0.25,0.5,0.75,1].map(v=>opt(v,P.rate,v)).join('')}</select>`:''}
+<label>Metabolizm: ${m<-3?'wolny':m>3?'szybki':'przeciętny'} (${m>0?'+':''}${m}%)</label><input type="range" min="-25" max="25" value="${m}" data-p="met"></div>
+<div class="card"><b>Twój plan</b><p style="margin:6px 0">Zapotrzebowanie: <b>${Math.round(c.tdee)} kcal</b><br>Cel dzienny: <b>${c.k} kcal</b><br><span style="color:${CP}">Białko ${c.p} g</span> · <span style="color:${CC}">Węgle ${c.c} g</span> · <span style="color:${CF}">Tłuszcz ${c.f} g</span></p>
+${c.low?'<p class="warn">Cel obcięty do bezpiecznego minimum. Zmniejsz tempo odchudzania.</p>':''}<p class="mut">Wzór Mifflina-St Jeora to przybliżenie. Prawdziwy metabolizm zmierzysz poniżej.</p></div>
+<div class="card"><b>Waga i realny metabolizm</b><label>Dzisiejsza waga (kg)</label><input id="nw" type="number" step="0.1" value="${P.w}"><button class="btn s" onclick="addW()">Zapisz wagę</button>
+<p class="mut">${W.slice(-4).map(x=>x.d+': '+x.w+' kg').join(' · ')||'Brak pomiarów.'}</p>
+${k?`<p>Z Twoich danych (średnio ${k.avg} kcal/dzień i zmiana wagi) realne zapotrzebowanie to ok. <b>${k.t} kcal</b>.</p><button class="btn" onclick="useCal(${k.t})">Dopasuj metabolizm</button>`:'<p class="mut">Po 2 tygodniach regularnego zapisywania posiłków i wagi policzę Twoje realne zapotrzebowanie.</p>'}</div>
+<div class="card"><b>Szacowanie przez AI</b><p class="mut">Darmowy klucz: openrouter.ai → Keys (bez karty). Klucz zostaje tylko w tej przeglądarce. Jeśli szacowanie trwa długo, wybierz szybki model z listy (modele rozumujące są wolniejsze).</p>
+<label>Klucz API</label><input type="password" data-s="key" value="${esc(S.key)}">
+<label>Model do opisów tekstem</label><input data-s="mt" list="ml1" value="${esc(S.mt)}"><label>Model do zdjęć</label><input data-s="mv" list="ml2" value="${esc(S.mv)}">
+<label>Tryb szacowania</label><select data-s="deep">${opt('',S.deep||'','Szybki (domyślnie)')}${opt('1',S.deep||'','Dokładniejszy, ale wolniejszy (model rozumuje)')}</select><button class="btn s" id="lmb" onclick="lm()">⚡ Pobierz listę darmowych modeli</button></div>`}
+function render(){$('#dl').textContent=tab==='day'?(D===iso(new Date())?'Dziś':new Date(D+'T12:00').toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'})):'Profil';$('#app').innerHTML=tab==='day'?rDay():rProf();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));$('#fab').hidden=tab!=='day'}
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.p){P[t.dataset.p]=t.dataset.str?t.value:num(t.value);sv('p',P);render()}else if(t.dataset.s){S[t.dataset.s]=t.value.trim();sv('s',S)}});
+async function lm(){const b=$('#lmb');b.textContent='Pobieram…';try{const j=await(await fetch('https://openrouter.ai/api/v1/models')).json(),f=j.data.filter(m=>+m.pricing.prompt===0&&+m.pricing.completion===0),rs=m=>(m.supported_parameters||[]).includes('reasoning'),o=a=>a.sort((x,y)=>rs(x)-rs(y)).map(m=>`<option value="${esc(m.id)}">${rs(m)?'rozumujący (wolniejszy)':'⚡ szybki'}</option>`).join('');
+$('#ml1').innerHTML=o(f.slice());$('#ml2').innerHTML=o(f.filter(m=>((m.architecture||{}).input_modalities||[]).includes('image')));b.textContent='Znaleziono '+f.length+'. Dotknij pola modelu, by wybrać.'}catch(e){b.textContent='Nie udało się pobrać listy. Spróbuj ponownie.'}}
+function addW(){const w=num($('#nw').value);if(!w)return;const d=iso(new Date());W=W.filter(x=>x.d!==d);W.push({d,w});sv('wh',W);P.w=w;sv('p',P);render()}
+function useCal(t){P.met=Math.max(-25,Math.min(25,Math.round((t/calc().base-1)*100)));sv('p',P);render()}
+/* posiłki */
+function tg(id){OP.has(id)?OP.delete(id):OP.add(id);render()}
+function rn(id,v){const g=find(id);if(g&&v.trim()){g.n=v.trim();sv('l',L);render()}}
+function dm(id){if(!confirm('Usunąć cały posiłek?'))return;L[D]=L[D].filter(g=>g.id!==id);sv('l',L);render()}
+function addG(n,items){const g={id:uid(),n:n||'Posiłek',t:hm(),items};(L[D]=L[D]||[]).push(g);OP.add(g.id);sv('l',L);closeSh();tab='day';render()}
+let EB={};
+function ei(id,j){const g=find(id),x=j<0?{n:'',g:0,k:0,p:0,c:0,f:0}:g.items[j];EB={...x};
+openSh(`<h3>${j<0?'Nowy składnik':'Edytuj składnik'}</h3>${j<0?`<label>Opisz słowami, a AI oszacuje</label><div class="row2"><input id="e_ai" placeholder="np. 1 łyżka oliwy"><button class="btn" style="margin:0;width:auto;padding:12px 16px" onclick="eai('${id}')">Oszacuj</button></div><p class="mut">Albo wpisz wartości ręcznie:</p>`:''}<label>Nazwa</label><input id="e_n" value="${esc(x.n)}"><label>Gramy (zmiana przelicza resztę)</label><input id="e_g" type="number" inputmode="decimal" value="${x.g||''}" oninput="eg()"><label>kcal</label><input id="e_k" type="number" inputmode="decimal" value="${r1(x.k)}">
+<div class="g3"><div><label>Białko</label><input id="e_p" type="number" inputmode="decimal" value="${r1(x.p)}"></div><div><label>Węgle</label><input id="e_c" type="number" inputmode="decimal" value="${r1(x.c)}"></div><div><label>Tłuszcz</label><input id="e_f" type="number" inputmode="decimal" value="${r1(x.f)}"></div></div>
+<button class="btn" onclick="es('${id}',${j})">Zapisz</button>${j<0?'':`<button class="btn s" onclick="ed('${id}',${j})">Usuń składnik</button>`}`)}
+function eg(){const g=num($('#e_g').value);if(!EB.g||!g)return;const r=g/EB.g;$('#e_k').value=r1(EB.k*r);$('#e_p').value=r1(EB.p*r);$('#e_c').value=r1(EB.c*r);$('#e_f').value=r1(EB.f*r)}
+function es(id,j){const g=find(id),x={n:$('#e_n').value.trim()||'Składnik',g:num($('#e_g').value),k:num($('#e_k').value),p:num($('#e_p').value),c:num($('#e_c').value),f:num($('#e_f').value)};j<0?g.items.push(x):g.items[j]=x;sv('l',L);closeSh();render()}
+function ed(id,j){const g=find(id);g.items.splice(j,1);if(!g.items.length)L[D]=L[D].filter(m=>m.id!==id);sv('l',L);closeSh();render()}
+/* okno */
+function openSh(h){$('#shc').innerHTML=h;$('#sh').hidden=false}
+function closeSh(){stopScan();$('#sh').hidden=true}
+function addMenu(){RC=recent();openSh(`<h3>Dodaj posiłek</h3><button class="btn" onclick="descUI()">💬 Opisz słowami</button><button class="btn s" onclick="$('#pc').click()">📷 Zrób zdjęcie posiłku</button><button class="btn s" onclick="$('#pg').click()">🖼 Zdjęcie z galerii</button><button class="btn s" onclick="scanUI()">▮▯▮ Skanuj kod kreskowy</button><button class="btn s" onclick="manual()">✍ Wpisz ręcznie</button>${RC.length?`<label>Ostatnie posiłki: dotknij, by dodać ponownie</label><div class="rcs">${RC.map((g,i)=>`<button onclick="reUI(${i})">${esc(g.n)}<small>${Math.round(tot(g.items).k)} kcal</small></button>`).join('')}</div>`:''}
+<input id="pc" type="file" accept="image/*" capture="environment" hidden onchange="photo(this.files[0])"><input id="pg" type="file" accept="image/*" hidden onchange="photo(this.files[0])">`)}
+function manual(){openSh(`<h3>Ręcznie</h3><label>Nazwa</label><input id="mn"><label>Gramy (opcjonalnie)</label><input id="mg" type="number" inputmode="decimal"><label>kcal</label><input id="mk" type="number" inputmode="decimal"><div class="g3"><div><label>Białko</label><input id="mp" type="number" inputmode="decimal"></div><div><label>Węgle</label><input id="mc" type="number" inputmode="decimal"></div><div><label>Tłuszcz</label><input id="mf" type="number" inputmode="decimal"></div></div><button class="btn" onclick="mAdd()">Dodaj</button>`)}
+function mAdd(){const n=$('#mn').value.trim()||'Posiłek';addG(n,[{n,g:num($('#mg').value),k:num($('#mk').value),p:num($('#mp').value),c:num($('#mc').value),f:num($('#mf').value)}])}
+/* AI */
+const PC=[['¼',.25],['⅓',1/3],['½',.5],['¾',.75],['całość',1],['×1,5',1.5],['×2',2]];
+const sc1=(x,f)=>({...x,g:r1(x.g*f),k:x.k*f,p:x.p*f,c:x.c*f,f:x.f*f});
+const chips=()=>`<div class="chips">${PC.map(([l,f])=>`<button class="${PF===f?'on':''}" onclick="PF=${f};pf()">${l}</button>`).join('')}</div>`;
+function pf(){CTX==='pre'?showIT():reShow()}
+function pg(id,f){const g=find(id);if(!g)return;g.items=g.items.map(x=>sc1(x,f));sv('l',L);render()}
+function rep(id){const g=find(id),c={id:uid(),n:g.n,t:hm(),items:g.items.map(x=>({...x}))};L[D].push(c);OP.add(c.id);sv('l',L);render()}
+function recent(){const seen=new Set(),out=[];Object.keys(L).sort().reverse().forEach(d=>L[d].slice().reverse().forEach(g=>{const k=g.n.toLowerCase();if(!seen.has(k)&&out.length<8){seen.add(k);out.push(g)}}));return out}
+function reUI(i){RG=RC[i];PF=1;CTX='re';reShow()}
+function reShow(){const t=tot(RG.items);openSh(`<h3>${esc(RG.n)}</h3><p class="mut">Cały posiłek: ${Math.round(t.k)} kcal. Ile zjadłeś?</p>${chips()}<p><b>${Math.round(t.k*PF)} kcal</b> · B ${r1(t.p*PF)} W ${r1(t.c*PF)} T ${r1(t.f*PF)}</p><button class="btn" onclick="addG(RG.n,RG.items.map(x=>sc1(x,PF)))">Dodaj do dziennika</button>`)}
+/* AI */
+const FMT=' ZASADY: 1) Rozpoznaj każdy widoczny składnik osobno, także olej lub masło użyte do smażenia, sosy, dressingi, pieczywo, napoje i dodatki. 2) Podaj wagę w gramach tak, jak jest zjadana (ryż i makaron liczone po ugotowaniu). Wielkość oceniaj po talerzu (ok. 26 cm), sztućcach i innych przedmiotach. 3) Dla KAŻDEGO składnika podaj wartości na 100 g produktu w takiej formie, w jakiej jest zjadany (jak w tabelach USDA lub IŻŻ), a nie dla całej porcji. Nie zaokrąglaj na siłę. Przykłady na 100 g: ryż biały ugotowany 130 kcal, pierś kurczaka grillowana 165, ziemniaki gotowane 77, chleb pszenny 250, oliwa 884. 4) Jeśli użytkownik podał wagi lub składniki, użyj ich dokładnie. 5) Nie pomijaj składników i nie wymyślaj takich, których nie widać ani nie opisano. Odpowiedz tylko JSON: {"title":"krótka nazwa posiłku","items":[{"name":"","grams":0,"per100":{"kcal":0,"protein":0,"carbs":0,"fat":0}}],"note":"krótko o największej niepewności"}. Nazwy po polsku.';
+function pi(x){const g=num(x.grams||x.g),q=x.per100||x.per_100g||null,m=q?g/100:1,s=q||x;const p=num(s.protein)*m,c=num(s.carbs)*m,f=num(s.fat)*m,kc=num(s.kcal)*m,kk=4*p+4*c+9*f,k=kk>0&&(!kc||Math.abs(kc-kk)/kk>.25)?kk:kc,i={n:x.name||'Składnik',g,k,p,c,f,on:true};i.b={...i};return i}
+async function ask(content,vis,mode,gid){LR=[content,vis,mode,gid];if(!S.key){openSh(`<h3>Brak klucza API</h3><p class="mut">Wklej darmowy klucz OpenRouter w zakładce Profil.</p><button class="btn" onclick="closeSh();tab='prof';render()">Przejdź do profilu</button>`);return}
+openSh('<div class="spin"></div><p class="mut" style="text-align:center">Szacuję… <span id="el">0 s</span></p>');
+const deep=S.deep==='1';let sec=0;const iv=setInterval(()=>{const e=$('#el');if(e)e.textContent=++sec+' s'},1000),ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),deep?100000:40000);
+try{const call=extra=>fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.key},body:JSON.stringify(Object.assign({model:(vis?S.mv:S.mt)||'openrouter/free',temperature:.1,messages:[{role:'user',content}]},extra))});
+let r=await call(deep?{max_tokens:3000}:{max_tokens:1400,reasoning:{enabled:false}});if(r.status===400)r=await call({});
+if(r.status===429)throw new Error('Wyczerpany limit darmowych zapytań (dzienny lub minutowy). Spróbuj później albo dodaj ręcznie.');if(r.status===401)throw new Error('Klucz API jest nieprawidłowy. Sprawdź go w Profilu.');if(!r.ok)throw new Error('Błąd API ('+r.status+'). Spróbuj ponownie za chwilę.');
+const j=await r.json(),m=String(j.choices[0].message.content).match(/\{[\s\S]*\}/);if(!m)throw new Error('Model nie zwrócił czytelnej odpowiedzi.');const o=JSON.parse(m[0]),its=(o.items||[]).map(pi);
+if(mode==='grp'){const g=find(gid);if(!its.length)throw new Error('Nie rozpoznano składnika.');g.items.push(...its.map(({on,b,...q})=>q));OP.add(gid);sv('l',L);closeSh();render()}
+else if(mode==='pre'){if(!its.length)throw new Error('Nie rozpoznano składnika.');IT=IT.concat(its);showIT()}
+else{IT=its;TT=o.title||'Posiłek';NT=o.note||'';PF=1;CTX='pre';showIT()}}
+catch(e){const slow=e.name==='AbortError';openSh(`<h3>Nie udało się</h3><p class="mut">${esc(slow?'Model odpowiada zbyt wolno. Wybierz szybszy model (⚡) w Profilu albo spróbuj ponownie.':e.message)}</p><button class="btn" onclick="ask(...LR)">Spróbuj ponownie</button>${IT.length&&mode==='pre'?'<button class="btn s" onclick="showIT()">Wróć do szacunku</button>':''}<button class="btn s" onclick="manual()">Dodaj ręcznie</button>`)}
+finally{clearInterval(iv);clearTimeout(to)}}
+function descUI(){openSh(`<h3>Opisz, co zjadłeś</h3><p class="mut">Np. „200 g kurczaka z grilla, szklanka ryżu i surówka z łyżką oliwy”. Im dokładniej podasz ilości, tym lepszy szacunek.</p><textarea id="dt" rows="4"></textarea><button class="btn" onclick="describe()">Oszacuj</button>`);setTimeout(()=>$('#dt')&&$('#dt').focus(),300)}
+function describe(){const t=$('#dt').value.trim();if(!t)return;ask('Jesteś dietetykiem. Użytkownik opisuje, co zjadł: "'+t.replace(/"/g,"'")+'". Rozbij to na składniki. Wagi i ilości podane przez użytkownika traktuj jako pewne; brakujące szacuj jako typową porcję.'+FMT,false,'new')}
+async function jpg(file){const b=await createImageBitmap(file),k=Math.min(1,900/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.78)}
+let PH='';
+async function photo(file){if(!file)return;try{PH=await jpg(file)}catch(e){openSh('<h3>Nie odczytano zdjęcia</h3>');return}
+openSh(`<h3>Zdjęcie posiłku</h3><img src="${PH}" style="width:100%;border-radius:14px;max-height:34vh;object-fit:cover"><label>Opis (opcjonalnie): co to jest, wagi, sposób przygotowania</label><textarea id="pd" rows="3" placeholder="np. kurczak 200 g, ryż 150 g, smażone na łyżce oleju"></textarea><button class="btn" onclick="photoGo()">Oszacuj</button>`)}
+function photoGo(){const d=$('#pd').value.trim();ask([{type:'text',text:'Jesteś dietetykiem. Na zdjęciu jest posiłek.'+(d?' Opis od użytkownika (traktuj jako pewny): "'+d.replace(/"/g,"'")+'".':'')+FMT+' Jeśli na zdjęciu nie ma jedzenia, items ma być puste.'},{type:'image_url',image_url:{url:PH}}],true,'new')}
+function showIT(){if(!IT.length){openSh('<h3>Nie widzę jedzenia</h3><button class="btn s" onclick="addMenu()">Spróbuj ponownie</button>');return}
+const t=tot(IT.filter(x=>x.on));openSh(`<h3>${Math.round(t.k*PF)} kcal</h3><p class="mut">Cały posiłek: ${Math.round(t.k)} kcal · B ${r1(t.p)} W ${r1(t.c)} T ${r1(t.f)}${PF!==1?` · Twoja porcja: B ${r1(t.p*PF)} W ${r1(t.c*PF)} T ${r1(t.f*PF)}`:''}</p>${NT?`<p class="mut">${esc(NT)}</p>`:''}<label>Nazwa posiłku</label><input value="${esc(TT)}" onchange="TT=this.value"><label>Ile z tego zjadłeś?</label>${chips()}<label>Składniki (popraw gramy, odznacz zbędne)</label>${IT.map((x,i)=>`<div class="it"><input type="checkbox" ${x.on?'checked':''} onchange="IT[${i}].on=this.checked;showIT()"><div><b>${esc(x.n)}</b><div class="mut">${Math.round(x.k)} kcal · B ${r1(x.p)} W ${r1(x.c)} T ${r1(x.f)}</div></div><input type="number" inputmode="decimal" value="${x.g}" onchange="sc(${i},this.value)"></div>`).join('')}<label>Dodaj składnik (opisz słowami)</label><div class="row2"><input id="ai2" placeholder="np. 1 łyżka oliwy"><button class="btn" style="margin:0;width:auto;padding:12px 16px" onclick="addIng()">Dodaj</button></div><button class="btn" onclick="addG(TT,IT.filter(x=>x.on).map(({on,b,...q})=>sc1(q,PF)))">Dodaj do dziennika</button>`)}
+function addIng(){const t=$('#ai2').value.trim();if(t)ask('Jesteś dietetykiem. Oszacuj ten dodatek do posiłku: "'+t.replace(/"/g,"'")+'". Wagę podaj w gramach.'+FMT,false,'pre')}
+function eai(id){const t=$('#e_ai').value.trim();if(t)ask('Jesteś dietetykiem. Oszacuj ten składnik: "'+t.replace(/"/g,"'")+'". Wagę podaj w gramach.'+FMT,false,'grp',id)}
+function sc(i,v){const x=IT[i],g=num(v),r=x.b.g?g/x.b.g:1;Object.assign(x,{g,k:x.b.k*r,p:x.b.p*r,c:x.b.c*r,f:x.b.f*r});showIT()}
+/* kody kreskowe */
+const loadZX=()=>window.ZXing?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+let zr=null,tor=false;
+function scanUI(){openSh(`<h3>Skanuj kod</h3><div class="vf"><video id="vid" playsinline muted></video><div class="rt"><s></s><s></s><s></s><s></s><i></i></div></div><p class="mut" id="sm">Ustaw kod poziomo w ramce, ok. 15–20 cm od telefonu. Skanuje się tylko to, co jest w ramce.</p><div class="g2"><button class="btn s" id="tb" onclick="torch()" hidden>🔦 Latarka</button><button class="btn s" onclick="$('#bf').click()">Zdjęcie kodu</button></div><label>Albo wpisz numer</label><input id="bc" type="number" inputmode="numeric"><button class="btn" onclick="lookup($('#bc').value)">Szukaj</button><input id="bf" type="file" accept="image/*" capture="environment" hidden onchange="scanFile(this.files[0])">`);startScan()}
+async function startScan(){scanning=true;try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}});const v=$('#vid');v.srcObject=stream;await v.play();
+const tr=stream.getVideoTracks()[0],cp=tr.getCapabilities?tr.getCapabilities():{};try{if(cp.focusMode&&cp.focusMode.includes('continuous'))await tr.applyConstraints({advanced:[{focusMode:'continuous'}]})}catch(e){}if(cp.torch)$('#tb').hidden=false;
+let det=null;if('BarcodeDetector' in window)det=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128']});
+else{await loadZX();const hs=new Map();hs.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.EAN_13,ZXing.BarcodeFormat.EAN_8,ZXing.BarcodeFormat.UPC_A,ZXing.BarcodeFormat.UPC_E,ZXing.BarcodeFormat.CODE_128]);hs.set(ZXing.DecodeHintType.TRY_HARDER,true);zr=new ZXing.MultiFormatReader();zr.setHints(hs)}
+const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+const loop=async()=>{if(!scanning)return;const w=v.videoWidth,h=v.videoHeight;if(w){const sw=w*.82,sh=h*.34;cv.width=sw;cv.height=sh;cx.drawImage(v,w*.09,h*.33,sw,sh,0,0,sw,sh);try{let code=null;if(det){const r=await det.detect(cv);if(r.length)code=r[0].rawValue}else{try{code=zr.decode(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(cv)))).getText()}catch(e){}}if(code)return onCode(code)}catch(e){}}setTimeout(loop,90)};loop()}
+catch(e){$('#sm').textContent='Brak dostępu do kamery (potrzebny HTTPS i zgoda). Użyj zdjęcia kodu albo wpisz numer.'}}
+async function torch(){const tr=stream&&stream.getVideoTracks()[0];if(!tr)return;tor=!tor;try{await tr.applyConstraints({advanced:[{torch:tor}]})}catch(e){}}
+function stopScan(){scanning=false;tor=false;if(stream)stream.getTracks().forEach(t=>t.stop());stream=zr=null}
+function onCode(c){if(navigator.vibrate)navigator.vibrate(60);stopScan();lookup(c)}
+async function scanFile(f){if(!f)return;try{let code;if('BarcodeDetector' in window){const r=await new BarcodeDetector().detect(await createImageBitmap(f));code=r[0]&&r[0].rawValue}else{await loadZX();code=(await new ZXing.BrowserMultiFormatReader().decodeFromImageUrl(URL.createObjectURL(f))).getText()}
+if(!code)throw 0;lookup(code)}catch(e){$('#sm').textContent='Nie odczytano kodu. Zrób ostrzejsze zdjęcie albo wpisz numer.'}}
+async function lookup(code){code=String(code).replace(/\D/g,'');if(!code)return;stopScan();openSh('<div class="spin"></div><p class="mut" style="text-align:center">Szukam produktu…</p>');
+try{const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+code+'.json?fields=product_name,brands,nutriments,serving_quantity'),j=await r.json(),p=j.product;if(j.status!==1||!p)throw 0;const n=p.nutriments||{};let k=n['energy-kcal_100g'];if(k==null&&n.energy_100g!=null)k=n.energy_100g/4.184;if(k==null)throw 0;
+PR={n:(p.product_name||'Produkt')+(p.brands?' ('+p.brands.split(',')[0]+')':''),k:+k,p:+n.proteins_100g||0,c:+n.carbohydrates_100g||0,f:+n.fat_100g||0};const g=+p.serving_quantity||100;
+openSh(`<h3>${esc(PR.n)}</h3><p class="mut">Na 100 g: ${Math.round(PR.k)} kcal · B ${r1(PR.p)} W ${r1(PR.c)} T ${r1(PR.f)}</p><label>Ile gramów zjadłeś?</label><input id="pg2" type="number" inputmode="decimal" value="${g}" oninput="pv()"><p id="pvr"></p><button class="btn" onclick="addPR()">Dodaj do dziennika</button>`);pv()}
+catch(e){openSh(`<h3>Nie znaleziono produktu ${code}</h3><p class="mut">Brak w bazie Open Food Facts albo bez danych o wartościach.</p><button class="btn" onclick="manual()">Dodaj ręcznie</button>`)}}
+function pv(){const f=num($('#pg2').value)/100;$('#pvr').innerHTML='<b>'+Math.round(PR.k*f)+' kcal</b>'}
+function addPR(){const g=num($('#pg2').value),f=g/100;addG(PR.n,[{n:PR.n,g,k:PR.k*f,p:PR.p*f,c:PR.c*f,f:PR.f*f}])}
+render();
+</script></body></html>
